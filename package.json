@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "name": "student_store",
+  "version": "1.0.0",
+  "description": "📝 `NOTE` Use this template to initialize the contents of a README.md file for your application. As you work on your assignment over the course of the week, update the required or stretch features lists to indicate which features you have completed by changing `[ ]` to `[x]`. (🚫 Remove this paragraph before submitting your assignment.)",
+  "main": "server.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dellaaalee/student_store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dellaaalee/student_store/issues"
+  },
+  "homepage": "https://github.com/dellaaalee/student_store#readme"
+}
