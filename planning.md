@@ -227,3 +227,34 @@ any item leaves zero rows behind. Step by step at the data layer:
 **Net guarantee:** either a complete order with all its line items exists, or nothing
 does. There is no state where an order exists without its items, or where some items were
 created and others were not.
+
+
+## Decisions Log — Product Model
+
+- **Schema translation that went smoothly**: The Product table mapped 1:1 from the spec
+  into Prisma — `id Int @id @default(autoincrement())`, the required `String`/`Float`
+  fields, and `imageUrl String @map("image_url")` so the DB column stays snake_case while
+  the Prisma field is camelCase. Added `@@map("products")` for the table name. The
+  `orderItems OrderItem[]` back-relation is intentionally commented out until the
+  `OrderItem` model exists (this task is Product-only).
+
+- **Field decision I made during implementation that wasn't in the original spec**:
+  Stayed strict to the spec — deliberately did *not* add `@updatedAt`/`@createdAt` to
+  Product, to avoid drifting from the documented contract. The one cross-cutting addition
+  was a `serializeProduct()` helper in `server.js` that converts Prisma's `imageUrl` back
+  to `image_url` on every response, so the API output matches what the frontend reads.
+
+- **Route behavior that needed a spec update**: No spec change needed — all five routes
+  were implemented exactly as documented (`GET` list/one, `POST` 201, `PUT` 200, `DELETE`
+  204; 404 `{ "error": "Product not found" }` via Prisma's `P2025` error code). One
+  **addition** beyond the spec: routes return `400 { "error": "Product id must be an
+  integer" }` when `:id` isn't numeric — input the contract didn't cover.
+
+- **Tooling note (not a model decision)**: `npx prisma` initially pulled v7, which rejects
+  `url = env(...)` in `schema.prisma`. Pinned the CLI to `prisma@^6` (matching
+  `@prisma/client@^6`) as a devDependency to fix it. **Migration not yet run** — needs a
+  real Postgres `DATABASE_URL` in `.env` (still placeholder). Run later:
+  `cd student-store-api && npx prisma migrate dev --name init_products_table`
+
+
+

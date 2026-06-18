@@ -8,17 +8,15 @@ async function seed() {
     console.log('🌱 Seeding database...\n')
 
     // Clear existing data (in order due to relations)
-    await prisma.orderItem.deleteMany()
-    await prisma.order.deleteMany()
+    // NOTE: Order and OrderItem models are not implemented yet (Product-only),
+    // so only products are cleared/seeded for now.
+    // await prisma.orderItem.deleteMany()
+    // await prisma.order.deleteMany()
     await prisma.product.deleteMany()
 
     // Load JSON data
     const productsData = JSON.parse(
-      fs.readFileSync(path.join(__dirname, '../data/products.json'), 'utf8')
-    )
-
-    const ordersData = JSON.parse(
-      fs.readFileSync(path.join(__dirname, '../data/orders.json'), 'utf8')
+      fs.readFileSync(path.join(__dirname, 'data/products.json'), 'utf8')
     )
 
     // Seed products
@@ -34,26 +32,30 @@ async function seed() {
       })
     }
 
-    // Seed orders and items
-    for (const order of ordersData.orders) {
-      const createdOrder = await prisma.order.create({
-        data: {
-          customer: order.customer_id,
-          totalPrice: order.total_price,
-          status: order.status,
-          createdAt: new Date(order.created_at),
-          orderItems: {
-            create: order.items.map((item) => ({
-              productId: item.product_id,
-              quantity: item.quantity,
-              price: item.price,
-            })),
-          },
-        },
-      })
+    console.log(`✅ Created ${productsData.products.length} products`)
 
-      console.log(`✅ Created order #${createdOrder.id}`)
-    }
+    // Order / OrderItem seeding is disabled until those models are implemented.
+    // const ordersData = JSON.parse(
+    //   fs.readFileSync(path.join(__dirname, '../data/orders.json'), 'utf8')
+    // )
+    // for (const order of ordersData.orders) {
+    //   const createdOrder = await prisma.order.create({
+    //     data: {
+    //       customer: order.customer_id,
+    //       totalPrice: order.total_price,
+    //       status: order.status,
+    //       createdAt: new Date(order.created_at),
+    //       orderItems: {
+    //         create: order.items.map((item) => ({
+    //           productId: item.product_id,
+    //           quantity: item.quantity,
+    //           price: item.price,
+    //         })),
+    //       },
+    //     },
+    //   })
+    //   console.log(`✅ Created order #${createdOrder.id}`)
+    // }
 
     console.log('\n🎉 Seeding complete!')
   } catch (err) {
