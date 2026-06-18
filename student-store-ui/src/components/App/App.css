@@ -15,5 +15,14 @@
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  /* Reserve room for the collapsed (60px) sidebar so content isn't hidden under it. */
   padding-left: 60px;
+  transition: padding-left 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* When the sidebar is expanded (575px) it's a fixed overlay; shift the main
+   content right so the navbar and products stay clickable instead of being
+   covered by it. */
+.App main.sidebar-open {
+  padding-left: 575px;
 }

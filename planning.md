@@ -257,4 +257,150 @@ created and others were not.
   `cd student-store-api && npx prisma migrate dev --name init_products_table`
 
 
+## Spec Reconciliation — Milestone 4 (Schema Audit)
 
+> **Status: implemented and tested.** `OrderItem` was added with relations to `Order` and
+> `Product`, cascade deletes enabled on both, migration `add_order_items_with_relations`
+> applied, and the transactional `POST /orders` / fetch-with-items flow wired up. All
+> behaviors below were verified end to end via curl against the live `student-store` DB.
+
+### Schema vs. spec gaps found
+- **No gaps — schema matched the spec exactly.** `OrderItem` was translated verbatim from
+  the Section 1 table: `id Int @id @default(autoincrement())`, `orderId Int @map("order_id")`,
+  `productId Int @map("product_id")`, `quantity Int`, `price Float`, plus
+  `@@map("order_items")`. No extra fields; no spec fields omitted.
+- **Relationships modeled correctly:** `OrderItem` holds both foreign keys; its two
+  `@relation` fields point at `Order.id` and `Product.id`. The previously commented-out
+  back-relations (`orderItems OrderItem[]`) on `Order` and `Product` were uncommented —
+  this was the one expected "gap" from earlier Product-/Order-only milestones, now closed.
+- **Cascade rules implemented as documented:** `onDelete: Cascade` on *both* OrderItem
+  relations. Confirmed in the generated migration SQL — both FK constraints
+  (`order_items_order_id_fkey`, `order_items_product_id_fkey`) carry `ON DELETE CASCADE`.
+- **Note (price semantics):** `OrderItem.price` is the unit price captured at time of
+  purchase. `POST /orders` looks the price up from the `Product` table server-side rather
+  than trusting the client, and stores it on the item — matching Section 3 intent.
+
+### Cascade delete verification
+- Deleting a Product removes associated OrderItems: ✅ tested — `DELETE /products/31`
+  (a product referenced by an order item) returned `204`, and that `OrderItem` row
+  disappeared from `GET /order-items` and from the order's `items`.
+- Deleting an Order removes associated OrderItems: ✅ tested — `DELETE /orders/2` returned
+  `204`, and `GET /order-items` then returned `[]` (its remaining items were removed).
+- Also verified: `POST /orders` with an `items` array → `201` with the created `items`
+  and a server-computed `total_price` (29.99×2 + 1.99×1 = **61.97**); `GET /orders/:id`
+  returns the order **with** its `items`; bad input → `400` (nonexistent product id and
+  empty `items` both rejected before any rows are written).
+
+
+
+## Decisions Log — Order Creation Transaction
+
+- **What my Transactional Flow spec got right**: The Section 3 ordering held up exactly:
+  validate → resolve products & look up prices server-side → reject unknown product ids
+  *before* writing → compute `totalPrice` → create the Order with nested `orderItems` in
+  one call. Using Prisma's **nested create** (rather than a manual `$transaction([...])`)
+  was enough, because a nested create is itself one implicit transaction.
+
+- **What the spec missed that I discovered during implementation**: Nothing major, but
+  two practical details: (1) the `price` stored on each `OrderItem` must come from the
+  Product table, not the request body — the spec said this but it's easy to miss. (2) The
+  response needed a `serializeOrderItem()` helper and a tweak to `serializeOrder()` to emit
+  the nested `items` array in snake_case (`order_item_id`, etc.); the model returns Prisma's
+  `orderItems`, so the route maps it. I used a typed `BadOrderError` so the route can tell
+  "bad input → 400" apart from a real 500.
+
+- **How the transaction error handling works**: `prisma.order.create({ data: { orderItems:
+  { create: [...] } } })` runs as a single implicit transaction. If creating the Order or
+  *any* one of its OrderItems fails, Prisma rolls back the whole unit — so you never end up
+  with an Order that has only some of its items, or an Order with no items. (For
+  multi-step logic that can't be one nested write, the equivalent guarantee comes from
+  wrapping the steps in the explicit `prisma.$transaction([...])` API.) Because I also
+  validate product ids *before* the create, the common bad-input case (nonexistent product)
+  is rejected with a 400 and nothing is written at all.
+
+- **What the success and failure tests confirmed**: Success case — a valid order with two
+  items returned `201` with the order plus both `items`, and a server-computed
+  `total_price` of 61.97 (29.99×2 + 1.99×1). Failure case — an order whose `items` included
+  a nonexistent `product_id` returned `400 { "error": "Product <id> does not exist" }`, and
+  a follow-up `GET /order-items` confirmed **no partial order or stray items** were
+  written. Empty/missing `items` is likewise rejected with `400` before any DB write.
+
+- **One thing I'd design differently if starting over**: I'd type `price`/`totalPrice` as
+  `Decimal` instead of `Float` from the start to avoid floating-point rounding on money
+  (the spec already flags this). I'd also compute `totalPrice` from the persisted
+  OrderItems in the same transaction, so the stored total can never drift from the line
+  items even if the creation path changes later.
+
+
+
+## Final Spec Reconciliation: Project Complete
+
+> **Status: full system connected and tested.** Frontend (`student-store-ui`, Vite on
+> 5173) talks to the backend (`student-store-api`, Express on 3001) over CORS. The
+> complete flow — browse products → add to cart → place order → see receipt — was
+> exercised end to end against the live `student-store` database.
+
+### One complete user flow: a customer placing an order
+1. **Browse** — On mount, `App.jsx` calls `GET /products` and renders the 9 seeded
+   products. Each card reads `image_url`, `name`, `price` — exactly the snake_case shape
+   the API serializes. ✅ matches contract.
+2. **Cart** — Cart is local state `{ [productId]: quantity }`. At checkout it is
+   transformed into the contract's `items: [{ product_id: <int>, quantity }]` (product ids
+   are `Number()`-coerced, since cart keys are strings). ✅
+3. **Order** — `POST /orders` is sent with `{ customer: <int>, customer_email, items }`.
+   This matches the **Detailed contract: POST /orders** exactly: no client-supplied
+   prices, server computes `total_price`. Verified response: `201` with `order_id`,
+   `total_price`, and the nested `items` array. ✅
+4. **Receipt** — The response includes everything the frontend needs (`order_id`,
+   `items[].quantity/price`, `total_price`). `CheckoutSuccess` renders a
+   `purchase.receipt.lines` array, which the spec/API does **not** return — see "gaps"
+   below for how this was resolved.
+
+### Full-system audit result
+- **All endpoints match the API contract.** `GET /products`, `GET /products/:id`, and
+  `POST /orders` (the three the UI uses) line up on path, request body, and response
+  field names. The other documented routes (`PUT`/`DELETE /products`, full `/orders`
+  CRUD, `/order-items`, `POST /orders/:order_id/items`) exist and were tested earlier.
+- **CORS** is enabled (`app.use(cors())` in `server.js`); preflight `OPTIONS /orders`
+  returns `204` with `Access-Control-Allow-Origin: *`, so the browser cross-origin call
+  from `:5173` → `:3001` succeeds.
+- **Edge cases the spec defines, and how the system handles them:**
+  - *Empty cart* — the spec says `items` must be non-empty (`400`). The frontend guards
+    this **before** sending ("Your cart is empty.") so a request is never made; the
+    backend would also reject it. ✅ covered on both sides.
+  - *Product not found* — `POST /orders` with a bad `product_id` → backend `400`
+    `{ "error": "Product <id> does not exist" }`, no partial order written; the frontend
+    surfaces `err.response.data.error` in the error banner. ✅
+  - *Failed order / network down* — `GET /products` failure shows "Failed to load
+    products. Is the API server running?"; checkout failure shows the server's error
+    message. ✅
+- **Things the implementation does that the spec didn't document** (now noted here):
+  (1) numeric-id guard returning `400 "… must be an integer"` on non-numeric `:id`;
+  (2) CORS configuration; (3) the UI-built `purchase.receipt.lines` view model.
+
+### Gaps resolved during frontend integration
+- **Frontend had zero working API calls.** axios was imported but unused and
+  `handleOnCheckout` was an empty stub. Resolved by wiring `GET /products` (App mount),
+  `GET /products/:id` (ProductDetail), and `POST /orders` (checkout) to `API_BASE_URL`
+  (`http://localhost:3001`, overridable via `VITE_API_BASE_URL`).
+- **`userInfo` shape mismatch.** State was `{ name, dorm_number }` and `PaymentInfo` bound
+  the email input to `userInfo.id` (always undefined) while writing to `email`. Fixed the
+  bindings to `{ name, email }`, relabeled the field "Email", and mapped at checkout:
+  `customer: Number(userInfo.name)`, `customer_email: userInfo.email`. (The form's
+  "Student ID" is the integer `customer`, per the contract.)
+- **Response-shape mismatch at the receipt.** `CheckoutSuccess` expects
+  `order.purchase.receipt.lines`, but the API returns a flat order. Rather than rewrite
+  the component, the checkout handler builds the `purchase.receipt.lines` view model from
+  the real response (`order_id`, item lines, `total_price`) — the contract stays as the
+  source of truth and the UI adapts to it.
+- **Float money artifact (cosmetic).** A computed `total_price` can surface as
+  `80.94999999999999` (the `Float` rounding the spec already flags). The UI's
+  `formatPrice()` rounds to 2 decimals (`$80.95`), so display is correct; the documented
+  fix remains "use `Decimal` for currency."
+
+### What the spec enabled during this project
+- Having the contract written first made the integration almost mechanical: every
+  mismatch was a quick diff between "what the frontend sends/reads" and a documented
+  field name, rather than a guessing game. The snake_case-vs-camelCase boundary
+  (`image_url`, `total_price`, `order_id`) was decided once in the spec and enforced by
+  the serializers, so the frontend and backend never disagreed on field names once wired.

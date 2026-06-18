@@ -8,6 +8,13 @@
   padding-bottom: 50px;
 }
 
+.ProductDetail .back-link {
+  align-self: flex-start;
+  margin: 20px 0 10px var(--side-padding);
+  font-weight: 500;
+  color: var(--bright-green);
+}
+
 .ProductDetail .product-card {
   min-height: 350px;
   max-width: 600px;

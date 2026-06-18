@@ -7,6 +7,9 @@ import Home from "../Home/Home";
 import ProductDetail from "../ProductDetail/ProductDetail";
 import NotFound from "../NotFound/NotFound";
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart";
+import { calculateTaxesAndFees, calculateTotal } from "../../utils/calculations";
+import { formatPrice } from "../../utils/format";
+import { API_BASE_URL } from "../../constants";
 import "./App.css";
 
 function App() {
@@ -15,13 +18,30 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All Categories");
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [userInfo, setUserInfo] = useState({ name: "", dorm_number: ""});
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState(null);
   const [order, setOrder] = useState(null);
+
+  // Fetch the product catalog from the backend on first render.
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsFetching(true);
+      setError(null);
+      try {
+        const { data } = await axios.get(`${API_BASE_URL}/products`);
+        setProducts(data);
+      } catch (err) {
+        setError("Failed to load products. Is the API server running?");
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Toggles sidebar
   const toggleSidebar = () => setSidebarOpen((isOpen) => !isOpen);
@@ -37,7 +57,70 @@ function App() {
   };
 
   const handleOnCheckout = async () => {
-  }
+    // Don't attempt an order with an empty cart (spec: items must be non-empty).
+    const productIds = Object.keys(cart);
+    if (!productIds.length) {
+      setError("Your cart is empty.");
+      return;
+    }
+
+    // Validate Student ID: must be a whole, positive number (the contract's
+    // integer `customer` field).
+    const studentId = userInfo.name.trim();
+    if (!/^\d+$/.test(studentId)) {
+      setError("Student ID must be a number.");
+      return;
+    }
+
+    // Validate email format.
+    const email = userInfo.email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setIsCheckingOut(true);
+    setError(null);
+
+    // Transform the cart ({ [productId]: quantity }) into the contract's items
+    // array. product_id must be an integer; the server looks up unit prices.
+    const items = productIds.map((id) => ({
+      product_id: Number(id),
+      quantity: cart[id],
+    }));
+
+    try {
+      const { data } = await axios.post(`${API_BASE_URL}/orders`, {
+        // `customer` is an integer id per the contract; carried by the Student
+        // ID field (validated above to be numeric).
+        customer: Number(studentId),
+        customer_email: email,
+        items,
+      });
+
+      // The API returns a flat order ({ order_id, total_price, items: [...] }).
+      // Build the receipt-lines shape the CheckoutSuccess component renders.
+      const productMapping = products.reduce((acc, p) => {
+        acc[p.id] = p;
+        return acc;
+      }, {});
+      const lines = [
+        `Order #${data.order_id} confirmed — thank you!`,
+        ...data.items.map((item) => {
+          const name = productMapping[item.product_id]?.name || `Product ${item.product_id}`;
+          return `${item.quantity} x ${name} @ ${formatPrice(item.price)}`;
+        }),
+        `Total: ${formatPrice(data.total_price)}`,
+      ];
+
+      setOrder({ ...data, purchase: { receipt: { lines } } });
+      setCart({});
+    } catch (err) {
+      setError(err?.response?.data?.error || "Checkout failed. Please try again.");
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
 
   return (
@@ -60,7 +143,7 @@ function App() {
           order={order}
           setOrder={setOrder}
         />
-        <main>
+        <main className={sidebarOpen ? "sidebar-open" : ""}>
           <SubNavbar
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}

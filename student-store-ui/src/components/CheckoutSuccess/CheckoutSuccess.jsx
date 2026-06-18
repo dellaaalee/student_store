@@ -1,8 +1,11 @@
 import "./CheckoutSuccess.css"
 
-const CheckoutSuccess = ({ order, setOrder }) => {
+const CheckoutSuccess = ({ order, setOrder, toggleSidebar }) => {
   const handleOnClose = () => {
     setOrder(null)
+    // Close the sidebar so the product catalog is clickable again. The sidebar
+    // is a fixed full-height overlay, so leaving it open blocks the page.
+    toggleSidebar()
   }
 
   const renderReceipt = () => (
