@@ -26,3 +26,17 @@ model Product {
 
   @@map("products")
 }
+
+model Order {
+  id            Int      @id @default(autoincrement())
+  customer      Int
+  customerEmail String?  @map("customer_email")
+  totalPrice    Float    @map("total_price")
+  status        String   @default("pending")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relation to OrderItem will be added when the OrderItem model is implemented:
+  // orderItems OrderItem[]
+
+  @@map("orders")
+}
