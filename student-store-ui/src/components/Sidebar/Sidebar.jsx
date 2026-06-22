@@ -1,24 +1,18 @@
-import { Link } from "react-router-dom"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
-import logo from "../../assets/codepath.svg"
 import "./Sidebar.css"
 
 
-function Sidebar({ cart, isOpen, products, userInfo, setUserInfo, toggleSidebar, handleOnCheckout,isCheckingOut, order, setOrder,error,}) {
+function Sidebar({ cart, isOpen, products, userInfo, setUserInfo, toggleSidebar, handleOnCheckout, isCheckingOut, order, setOrder, error }) {
   return (
-    <section className={`Sidebar ${isOpen ? "open" : "closed"}`}>
-
+    <aside className={`Sidebar ${isOpen ? "open" : "closed"}`}>
       <div className="wrapper">
 
-        <div className="logo">
-            <Link to="/">
-              <img src={logo} alt="codepath logo" />
-            </Link>
+        <div className="drawer-head">
+          <h3>Your Cart</h3>
+          <span className="close-button" onClick={toggleSidebar}>
+            <i className="material-icons">close</i>
+          </span>
         </div>
-
-        <span className={`toggle-button button ${isOpen ? "open" : "closed"}`} onClick={toggleSidebar}>
-          <i className="material-icons md-48">arrow_forward</i>
-        </span>
 
         <ShoppingCart
           isOpen={isOpen}
@@ -33,9 +27,9 @@ function Sidebar({ cart, isOpen, products, userInfo, setUserInfo, toggleSidebar,
           order={order}
           setOrder={setOrder}
         />
-        
+
       </div>
-    </section>
+    </aside>
   )
 }
 

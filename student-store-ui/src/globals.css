@@ -30,6 +30,13 @@
   --star-color-empty: #cbd4e6;
 }
 
+html {
+  /* Always reserve room for the vertical scrollbar so the layout width never
+     jumps when the product count (and page height) changes between filters. */
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
 body {
   margin: 0;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",

@@ -10,8 +10,7 @@
 }
 
 .ProductCard {
-  height: 340px;
-  width: 250px;
+  width: 100%;
   background: var(--pure-white);
   display: flex;
   flex-direction: column;
@@ -29,7 +28,8 @@
   box-shadow: var(--shadow-md);
 }
 .ProductCard .media {
-  height: 250px;
+  position: relative;
+  aspect-ratio: 1 / 1;
   width: 100%;
   background: var(--grey-bg);
   display: flex;
@@ -37,6 +37,25 @@
   justify-content: center;
   overflow: hidden;
   padding: 14px;
+}
+/* Quantity-in-cart badge overlaid on the top-right corner of the image. */
+.ProductCard .media .quantity-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--dark-green);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 .ProductCard .media img {
   max-height: 100%;
@@ -71,30 +90,12 @@
   color: var(--font-light);
 }
 .ProductCard .actions {
-  width: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
   padding-right: 12px;
   gap: 6px;
-}
-.ProductCard .actions .quantity {
-  display: flex;
-  justify-content: flex-end;
-}
-.ProductCard .actions .quantity .amt {
-  background: var(--dark-green);
-  color: white;
-  min-width: 26px;
-  height: 22px;
-  padding: 0 6px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .ProductCard .actions .buttons {
   display: flex;
@@ -117,4 +118,33 @@
   background: var(--dark-green);
   color: white;
   border-color: var(--dark-green);
+}
+
+/* ---- Mobile: stack name/price above the action buttons so nothing gets
+   squished into a narrow column ---- */
+@media screen and (max-width: 600px) {
+  .ProductCard .product-info {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ProductCard .info {
+    padding: 10px 12px 4px;
+  }
+  .ProductCard .info .product-name {
+    font-size: 14px;
+  }
+  .ProductCard .info .product-price {
+    font-size: 13px;
+  }
+  .ProductCard .actions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px 12px;
+  }
+  .ProductCard .actions .buttons i {
+    width: 34px;
+    height: 34px;
+  }
 }

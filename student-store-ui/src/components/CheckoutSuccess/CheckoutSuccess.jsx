@@ -19,12 +19,7 @@ const CheckoutSuccess = ({ order, setOrder, toggleSidebar }) => {
 
   return (
     <div className="CheckoutSuccess">
-      <h3>
-        Checkout Info{" "}
-        <span className={`icon button`}>
-          <i className="material-icons md-48">fact_check</i>
-        </span>
-      </h3>
+      <h3>Checkout Info</h3>
       {order?.purchase ? (
         <div className="card">
           <header className="card-head">

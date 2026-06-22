@@ -6,139 +6,79 @@
   padding: 0 var(--side-padding);
   background: var(--pure-white);
   border-bottom: solid 1px var(--border-color);
-  position: sticky;
+  /* Always pinned to the top of the viewport, regardless of scroll. */
+  position: fixed;
   top: 0;
-  z-index: 10;
+  left: 0;
+  right: 0;
+  z-index: 50;
 }
 .SubNavbar .content {
-  max-width: var(--content-width);
   width: 100%;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-}
-.SubNavbar .content .row {
+  padding: 0 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  margin: 16px 0;
-}
-.SubNavbar .content .search-bar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex: 1;
-  max-width: 520px;
-}
-.SubNavbar .content .search-bar input {
-  height: 44px;
-  padding: 0 18px;
-  border-radius: 999px 0 0 999px;
-  border: solid 1px var(--border-color);
-  border-right: none;
-  flex: 1;
-  font-size: 15px;
-  background: var(--grey-bg);
-  outline: none;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-.SubNavbar .content .search-bar input:focus {
-  background: var(--pure-white);
-  border-color: var(--dark-green);
-}
-.SubNavbar .content .search-bar i {
-  height: 44px;
-  width: 48px;
-  background: var(--dark-green);
-  color: white;
-  fill: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0 999px 999px 0;
-  cursor: pointer;
-}
-.SubNavbar .content .links {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 400px;
+  gap: 16px;
+  height: 72px;
 }
 
-.SubNavbar .content .help,
-.SubNavbar .content .auth a,
-.SubNavbar .content .cart a {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-weight: 500;
-}
-
-.SubNavbar .content .help i {
-  color: var(--muted);
-  margin-right: 10px;
-}
-
-.SubNavbar .content .auth a {
-  color: var(--font-dark);
-  margin: 0 5px;
-}
-
-.SubNavbar .content .cart {
-  color: var(--pure-white);
-  background: var(--dark-green);
-  width: 170px;
-  height: 40px;
+/* ---- Brand / logo (far left, spaced out from the tabs) ---- */
+.SubNavbar .brand {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  margin-left: 20px;
-}
-.SubNavbar .content .cart i,
-.SubNavbar .content .cart a {
-  color: var(--pure-white);
-  margin: 0 5px;
-}
-.SubNavbar .hamburger-menu {
+  flex-shrink: 0;
   margin-right: 40px;
 }
-.SubNavbar .hamburger-menu i {
-  cursor: pointer;
-  color: var(--muted);
+.SubNavbar .brand img {
+  height: 30px;
+  width: auto;
 }
+
+/* Hamburger toggle — hidden on desktop, shown on mobile. */
+.SubNavbar .menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--font-dark);
+  padding: 6px;
+  border-radius: 8px;
+}
+
+/* ---- Category tabs (center, takes remaining space) ---- */
 .SubNavbar .category-menu {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  flex: 1;
+  justify-content: center;
+  gap: 8px;
   list-style-type: none;
   height: 48px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
 }
-.SubNavbar .category-menu.closed {
-  opacity: 0;
-}
-.SubNavbar .category-menu.closed li button {
-  transform: scale(0.01);
+.SubNavbar .category-menu::-webkit-scrollbar {
+  display: none; /* Chrome/Safari — hide the scrollbar, keep scrollability */
 }
 .SubNavbar .category-menu li button {
   cursor: pointer;
   border: none;
   background: transparent;
   outline: none;
+  /* Keep weight constant so the pill width never changes between active/
+     inactive — this is what was causing the text to "grow/shrink" and the
+     tabs to jitter on switch. */
   font-weight: 500;
   font-size: 16px;
   color: var(--font-light);
-  padding: 10px 20px;
+  padding: 9px 18px;
   border-radius: 999px;
-  transition: all 0.18s ease;
+  white-space: nowrap;
+  transition: color 0.18s ease, background 0.18s ease;
 }
 .SubNavbar .category-menu li button:hover {
   color: var(--font-dark);
@@ -146,7 +86,197 @@
 }
 .SubNavbar .category-menu li.is-active button {
   color: var(--font-dark);
-  font-weight: 600;
   background: #eef0f0;
   box-shadow: var(--shadow-sm);
+}
+
+/* ---- Actions (far right, spaced out from the tabs): search + cart ---- */
+.SubNavbar .nav-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  margin-left: 40px;
+}
+
+.SubNavbar .search-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: var(--grey-bg);
+  border: solid 1px transparent;
+  border-radius: 999px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.SubNavbar .search-bar input {
+  height: 42px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  /* Collapsed by default — only the magnifying glass shows. */
+  width: 0;
+  padding: 0;
+  opacity: 0;
+  transition: width 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+}
+.SubNavbar .search-bar.open {
+  background: var(--pure-white);
+  border-color: var(--dark-green);
+}
+.SubNavbar .search-bar.open input {
+  width: 220px;
+  padding: 0 6px 0 18px;
+  opacity: 1;
+}
+.SubNavbar .search-bar .search-toggle {
+  height: 42px;
+  width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--font-dark);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.SubNavbar .search-bar.open .search-toggle {
+  color: var(--dark-green);
+}
+
+.SubNavbar .cart-button {
+  position: relative;
+  height: 42px;
+  width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: none;
+  background: var(--dark-green);
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.SubNavbar .cart-button:hover {
+  background: var(--dark-green-hover);
+}
+.SubNavbar .cart-button i {
+  font-size: 22px;
+}
+.SubNavbar .cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--pure-white);
+  color: var(--dark-green);
+  border: solid 1px var(--dark-green);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Responsive ---- */
+@media screen and (max-width: 768px) {
+  .SubNavbar {
+    padding: 0 16px;
+  }
+  .SubNavbar .content {
+    gap: 10px;
+    height: 60px;
+  }
+  .SubNavbar .brand {
+    margin-right: 0;
+  }
+  .SubNavbar .brand img {
+    height: 26px;
+  }
+
+  /* Show the hamburger; keep the logo at the left and actions at the right. */
+  .SubNavbar .menu-toggle {
+    display: flex;
+    align-items: center;
+    order: 3; /* place it just left of the actions */
+  }
+  .SubNavbar .nav-actions {
+    margin-left: 0;
+    order: 4;
+  }
+  .SubNavbar .brand {
+    order: 1;
+    margin-right: auto; /* push everything else to the right */
+  }
+
+  /* Collapse the tabs into a dropdown panel below the bar. */
+  .SubNavbar .category-menu {
+    order: 5;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: auto;
+    gap: 2px;
+    padding: 8px;
+    background: var(--pure-white);
+    border-bottom: solid 1px var(--border-color);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    /* Hidden until the hamburger is tapped. */
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom-width: 0;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+  }
+  .SubNavbar .category-menu.open {
+    max-height: 420px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom-width: 1px;
+  }
+  .SubNavbar .category-menu li {
+    width: 100%;
+  }
+  .SubNavbar .category-menu li button {
+    width: 100%;
+    text-align: left;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+
+  /* The cart icon docks to the bottom-right of the screen on mobile. */
+  .SubNavbar .cart-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 54px;
+    height: 54px;
+    z-index: 80;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  }
+  .SubNavbar .cart-button i {
+    font-size: 26px;
+  }
+
+  /* Keep the expanded search from overflowing narrow screens. */
+  .SubNavbar .search-bar.open input {
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .SubNavbar .search-bar.open input {
+    width: 120px;
+  }
 }

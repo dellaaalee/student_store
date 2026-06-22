@@ -3,12 +3,7 @@ import "./PaymentInfo.css"
 export default function PaymentInfo({ userInfo, setUserInfo, handleOnCheckout, isCheckingOut, error }) {
   return (
     <div className="PaymentInfo">
-      <h3 className="">
-        Payment Info{" "}
-        <span className="button">
-          <i className="material-icons md-48">monetization_on</i>
-        </span>
-      </h3>
+      <h3 className="">Payment Info</h3>
       <div className="input-field">
         <label className="label">Student ID</label>
         <div className="control ">

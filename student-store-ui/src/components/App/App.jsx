@@ -126,29 +126,14 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Sidebar
-          cart={cart}
-          error={error}
-          userInfo={userInfo}
-          setUserInfo={setUserInfo}
-          isOpen={sidebarOpen}
-          products={products}
-          toggleSidebar={toggleSidebar}
-          isCheckingOut={isCheckingOut}
-          addToCart={handleOnAddToCart}
-          removeFromCart={handleOnRemoveFromCart}
-          getQuantityOfItemInCart={handleGetItemQuantity}
-          getTotalItemsInCart={handleGetTotalCartItems}
-          handleOnCheckout={handleOnCheckout}
-          order={order}
-          setOrder={setOrder}
-        />
-        <main className={sidebarOpen ? "sidebar-open" : ""}>
+        <main>
           <SubNavbar
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
             searchInputValue={searchInputValue}
             handleOnSearchInputChange={handleOnSearchInputChange}
+            toggleSidebar={toggleSidebar}
+            getTotalItemsInCart={handleGetTotalCartItems}
           />
           <Routes>
             <Route
@@ -193,6 +178,31 @@ function App() {
             />
           </Routes>
         </main>
+
+        {/* Dimmed backdrop — clicking it closes the cart drawer. */}
+        <div
+          className={`cart-overlay ${sidebarOpen ? "open" : ""}`}
+          onClick={toggleSidebar}
+        />
+
+        {/* Cart drawer — slides in from the right. */}
+        <Sidebar
+          cart={cart}
+          error={error}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+          isOpen={sidebarOpen}
+          products={products}
+          toggleSidebar={toggleSidebar}
+          isCheckingOut={isCheckingOut}
+          addToCart={handleOnAddToCart}
+          removeFromCart={handleOnRemoveFromCart}
+          getQuantityOfItemInCart={handleGetItemQuantity}
+          getTotalItemsInCart={handleGetTotalCartItems}
+          handleOnCheckout={handleOnCheckout}
+          order={order}
+          setOrder={setOrder}
+        />
       </BrowserRouter>
     </div>
   );

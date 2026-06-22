@@ -8,6 +8,7 @@ function ProductCard({ product, quantity, addToCart, removeFromCart, index = 0 }
     <div className="ProductCard" style={{ animationDelay: `${index * 50}ms` }}>
       <Link to={`/${product.id}`} className="media">
         {product.image_url ? <img src={product.image_url} alt="product cover" /> : <img src={codepath} alt="product cover" />}
+        {quantity ? <span className="quantity-badge">{quantity}</span> : null}
       </Link>
       <div className="product-info">
         <div className="info">
@@ -23,12 +24,6 @@ function ProductCard({ product, quantity, addToCart, removeFromCart, index = 0 }
               remove
             </i>
           </div>
-
-          {quantity ? (
-            <span className="quantity">
-              <span className="amt">{quantity}</span>
-            </span>
-          ) : null}
         </div>
       </div>
     </div>

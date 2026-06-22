@@ -1,46 +1,62 @@
 .Sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  flex: 1;
-  transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
   position: fixed;
-  z-index: 100;
-  top: 0px;
+  top: 0;
+  right: 0;
   height: 100vh;
-  padding: 0;
-  overflow-y: scroll;
-  padding-bottom: 2rem;
+  width: 420px;
+  max-width: 90vw;
+  z-index: 100;
   background: var(--dark-blue);
-  border-right: solid 1px rgba(255, 255, 255, 0.08);
-}
-.Sidebar.closed {
-  width: 60px;
+  border-left: solid 1px rgba(255, 255, 255, 0.08);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  /* Slide in/out from the right edge. */
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .Sidebar.open {
-  width: 575px;
+  transform: translateX(0);
 }
 .Sidebar .wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
+  padding-bottom: 2rem;
 }
-.Sidebar .toggle-button {
-  margin-top: 20px;
-  transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+.Sidebar .drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.08);
 }
-/* .Sidebar .toggle-button i {
+.Sidebar .drawer-head h3 {
   color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+.Sidebar .close-button {
   cursor: pointer;
-} */
-.Sidebar .toggle-button.open {
-  transform: rotateY(180deg);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+.Sidebar .close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.Sidebar i {
+  cursor: pointer;
+  color: white;
 }
 
-.Sidebar i {
-  margin-right: 10px;
-  cursor: pointer;
-  color: white;
+@media screen and (max-width: 480px) {
+  .Sidebar {
+    width: 100vw;
+    max-width: 100vw;
+  }
 }

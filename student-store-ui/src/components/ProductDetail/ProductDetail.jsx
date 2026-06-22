@@ -6,36 +6,59 @@ import { formatPrice } from "../../utils/format";
 import { API_BASE_URL } from "../../constants";
 import "./ProductDetail.css";
 
-function ProductDetail({ addToCart, removeFromCart, getQuantityOfItemInCart }) {
+function ProductDetail({ products = [], addToCart, removeFromCart, getQuantityOfItemInCart }) {
 
   const { productId } = useParams();
-  const [product, setProduct] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState(null);
 
-  // Fetch this product's details by id from the backend.
+  // Seed from the already-loaded catalog so the page renders instantly with no
+  // "Loading..." flash when navigating from the grid. Falls back to a fetch
+  // only if the product isn't already in the list (e.g. direct URL visit).
+  const preloaded = products.find((p) => String(p.id) === String(productId));
+  const [product, setProduct] = useState(preloaded || null);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
+    // Already have it from the catalog — nothing to fetch.
+    const fromList = products.find((p) => String(p.id) === String(productId));
+    if (fromList) {
+      setProduct(fromList);
+      setError(false);
+      return;
+    }
+    // Otherwise fetch the single product (direct link / refresh).
+    let active = true;
     const fetchProduct = async () => {
-      setIsFetching(true);
-      setError(null);
       try {
         const { data } = await axios.get(`${API_BASE_URL}/products/${productId}`);
-        setProduct(data);
+        if (active) setProduct(data);
       } catch (err) {
-        setError("Product not found");
-      } finally {
-        setIsFetching(false);
+        if (active) setError(true);
       }
     };
     fetchProduct();
-  }, [productId]);
+    return () => {
+      active = false;
+    };
+  }, [productId, products]);
 
   if (error) {
     return <NotFound />;
   }
 
-  if (isFetching || !product) {
-    return <h1>Loading...</h1>;
+  if (!product) {
+    return (
+      <div className="ProductDetail">
+        <Link to="/" className="back-link">← Back to shop</Link>
+        <div className="product-card loading">
+          <div className="media skeleton" />
+          <div className="product-info">
+            <div className="skeleton-line lg" />
+            <div className="skeleton-line md" />
+            <div className="skeleton-line" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const quantity = getQuantityOfItemInCart(product);
