@@ -1,0 +1,105 @@
+.OrderDetail {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.OrderDetail .od-content {
+  width: 100%;
+  max-width: 760px;
+  padding: 32px var(--side-padding);
+}
+.OrderDetail .od-back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-weight: 500;
+  color: var(--dark-green);
+}
+.OrderDetail .od-message {
+  color: var(--font-light);
+  font-size: 15px;
+  padding: 32px 0;
+  text-align: center;
+}
+
+.OrderDetail .od-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.OrderDetail .od-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--font-dark);
+}
+.OrderDetail .od-status {
+  text-transform: capitalize;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.OrderDetail .od-status.completed {
+  background: var(--dark-green-soft);
+  color: var(--dark-green);
+}
+.OrderDetail .od-status.pending {
+  background: #fff3e0;
+  color: #b26a00;
+}
+.OrderDetail .od-meta {
+  display: flex;
+  gap: 16px;
+  margin: 6px 0 22px;
+  color: var(--font-light);
+  font-size: 14px;
+}
+
+/* ---- Items card ---- */
+.OrderDetail .od-card {
+  border: solid 1px var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--pure-white);
+}
+.OrderDetail .od-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 20px;
+  gap: 12px;
+}
+.OrderDetail .od-row .flex-2 { grid-column: span 1; }
+.OrderDetail .od-row .center { text-align: center; }
+.OrderDetail .od-row .right { text-align: right; }
+.OrderDetail .od-head {
+  background: var(--grey-bg);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--font-light);
+}
+.OrderDetail .od-item {
+  border-top: solid 1px var(--border-color);
+  font-size: 15px;
+  color: var(--font-dark);
+}
+.OrderDetail .od-total {
+  border-top: solid 1px var(--border-color);
+  background: var(--grey-bg);
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--font-dark);
+}
+
+@media screen and (max-width: 600px) {
+  .OrderDetail .od-content {
+    padding: 24px 16px;
+  }
+  .OrderDetail .od-row {
+    grid-template-columns: 2fr 0.7fr 1fr 1fr;
+    padding: 12px;
+    gap: 6px;
+    font-size: 13px;
+  }
+}

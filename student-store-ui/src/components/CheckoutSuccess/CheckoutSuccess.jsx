@@ -1,8 +1,10 @@
 import "./CheckoutSuccess.css"
 
-const CheckoutSuccess = ({ order, setOrder, toggleSidebar }) => {
+const CheckoutSuccess = ({ order, setOrder, setUserInfo, toggleSidebar }) => {
   const handleOnClose = () => {
     setOrder(null)
+    // Clear the payment info so it isn't retained for the next session.
+    if (setUserInfo) setUserInfo({ name: "", email: "" })
     // Close the sidebar so the product catalog is clickable again. The sidebar
     // is a fixed full-height overlay, so leaving it open blocks the page.
     toggleSidebar()

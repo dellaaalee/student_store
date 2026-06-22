@@ -1,35 +1,32 @@
 .CheckoutSuccess {
   width: 100%;
-  padding: 16px 0;
+  background: var(--pure-white);
+  border-radius: var(--radius);
+  padding: 18px 20px 20px;
 }
 
 .CheckoutSuccess > h3 {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--font-dark);
+  font-size: 17px;
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .CheckoutSuccess > h3 > span {
   margin-left: 10px;
 }
-.CheckoutSuccess p {
-  color: rgba(255, 255, 255, 0.8);
+.CheckoutSuccess > .content p {
+  color: var(--font-light);
   line-height: 1.6;
+  font-size: 14px;
 }
 .CheckoutSuccess .card {
   color: var(--font-dark);
   display: flex;
   flex-direction: column;
-  background: var(--pure-white);
-  border-radius: var(--radius);
-  border: solid 1px var(--border-color);
-  overflow: hidden;
-  margin-top: 10px;
 }
 .CheckoutSuccess .card-head {
-  padding: 16px 18px 0;
+  padding: 0 0 4px;
 }
 .CheckoutSuccess .card .card-title {
   color: var(--font-dark);
@@ -38,7 +35,7 @@
   margin-bottom: 5px;
 }
 .CheckoutSuccess .card-body {
-  padding: 12px 18px;
+  padding: 8px 0;
 }
 .CheckoutSuccess .purchase .header,
 .CheckoutSuccess .card-body > .header {
@@ -63,8 +60,9 @@
 .CheckoutSuccess .card-foot {
   display: flex;
   gap: 10px;
-  padding: 14px 18px;
+  padding: 14px 0 0;
   border-top: solid 1px var(--border-color);
+  margin-top: 8px;
 }
 .CheckoutSuccess button {
   flex: 1;

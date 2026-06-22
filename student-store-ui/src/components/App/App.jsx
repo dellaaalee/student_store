@@ -5,6 +5,8 @@ import SubNavbar from "../SubNavbar/SubNavbar";
 import Sidebar from "../Sidebar/Sidebar";
 import Home from "../Home/Home";
 import ProductDetail from "../ProductDetail/ProductDetail";
+import PastOrders from "../PastOrders/PastOrders";
+import OrderDetail from "../OrderDetail/OrderDetail";
 import NotFound from "../NotFound/NotFound";
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart";
 import { calculateTaxesAndFees, calculateTotal } from "../../utils/calculations";
@@ -43,8 +45,13 @@ function App() {
     fetchProducts();
   }, []);
 
-  // Toggles sidebar
-  const toggleSidebar = () => setSidebarOpen((isOpen) => !isOpen);
+  // Toggles the cart drawer. When closing it, clear the entered payment info
+  // so it isn't retained between sessions.
+  const toggleSidebar = () =>
+    setSidebarOpen((isOpen) => {
+      if (isOpen) setUserInfo({ name: "", email: "" });
+      return !isOpen;
+    });
 
   // Functions to change state (used for lifting state)
   const handleOnRemoveFromCart = (item) => setCart(removeFromCart(cart, item));
@@ -151,6 +158,11 @@ function App() {
                   getQuantityOfItemInCart={handleGetItemQuantity}
                 />
               }
+            />
+            <Route path="/orders" element={<PastOrders />} />
+            <Route
+              path="/orders/:orderId"
+              element={<OrderDetail products={products} />}
             />
             <Route
               path="/:productId"

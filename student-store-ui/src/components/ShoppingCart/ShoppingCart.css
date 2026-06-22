@@ -1,138 +1,153 @@
 .ShoppingCart {
   width: 100%;
-  color: white;
 }
 .ShoppingCart .open {
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 16px;
-  gap: 8px;
-}
-.ShoppingCart .open > h3 {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-}
-.ShoppingCart .open > h3 > span {
-  margin-left: 10px;
+  gap: 14px;
 }
 .ShoppingCart .notification {
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
-  margin: 16px 10px;
+  margin: 24px 10px;
   font-size: 15px;
 }
-.ShoppingCart .cart-icons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-  width: 100%;
-  padding-left: 0.5rem;
-}
-.ShoppingCart .cart-icon {
-  margin-bottom: 16px;
-}
-.ShoppingCart .CartTable {
-  width: 100%;
-  margin: 0;
-}
-.ShoppingCart .CartTable .header {
-  display: flex;
-  flex-direction: column;
+
+/* ---- Order summary card (reference style) ---- */
+.CartSummary {
   background: var(--pure-white);
-  border: solid 1px var(--border-color);
   border-radius: var(--radius);
-  width: 100%;
-  padding: 6px 12px 12px;
   overflow: hidden;
 }
-.ShoppingCart .header-row {
-  display: flex;
-  height: 46px;
-  border-bottom: solid 1px var(--border-color);
-  margin-bottom: 10px;
-}
-.ShoppingCart .header-row span {
-  flex: 1;
-  color: var(--font-light);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.ShoppingCart .header-row span.center {
-  display: flex;
-  justify-content: center;
-}
-.ShoppingCart .flex-2 {
-  flex: 2;
-}
-.ShoppingCart .product-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-bottom: 12px;
-  margin-top: 10px;
-  border-bottom: solid 1px var(--border-color);
-}
-.ShoppingCart .product-row span {
-  flex: 1;
-  color: var(--font-dark);
-  font-size: 14px;
-}
-.ShoppingCart .product-row span.center {
-  display: flex;
-  justify-content: center;
-}
-
-.ShoppingCart .receipt {
-  display: flex;
-  flex-direction: column;
-  background: var(--pure-white);
-  border: solid 1px var(--border-color);
-  border-radius: var(--radius);
-  width: 100%;
-  margin-top: 12px;
-  padding: 14px 16px;
-}
-.ShoppingCart .receipt span {
-  flex: 1;
-  color: var(--font-light);
-  font-size: 14px;
-}
-.ShoppingCart .receipt span.center {
-  display: flex;
-  justify-content: flex-end;
-  font-weight: 600;
-  color: var(--font-dark);
-}
-.ShoppingCart .receipt .receipt-subtotal,
-.ShoppingCart .receipt .receipt-taxes,
-.ShoppingCart .receipt .receipt-total {
+.CartSummary .summary-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 0;
+  padding: 18px 20px;
+  border-bottom: solid 1px var(--border-color);
 }
-.ShoppingCart .receipt .receipt-total {
-  border-top: solid 1px var(--border-color);
-  margin-top: 4px;
-  padding-top: 12px;
-}
-.ShoppingCart .receipt .receipt-total .label,
-.ShoppingCart .receipt .receipt-total span.center {
+.CartSummary .summary-title {
   font-size: 17px;
-  font-weight: 700;
-  color: var(--dark-green);
-}
-.ShoppingCart .receipt .label {
   font-weight: 600;
   color: var(--font-dark);
+}
+.CartSummary .summary-amount {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--font-dark);
+}
+
+.CartSummary .line-items {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 20px;
+}
+.CartSummary .line-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+}
+.CartSummary .line-item .thumb {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  /* No overflow:hidden here so the badge isn't clipped — round the image instead. */
+}
+.CartSummary .line-item .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--grey-bg);
+}
+.CartSummary .line-item .thumb-qty {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--dark-green);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 2px var(--pure-white);
+  z-index: 2;
+}
+.CartSummary .line-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.CartSummary .line-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--font-dark);
+}
+.CartSummary .line-category {
+  font-size: 13px;
+  color: var(--muted);
+}
+.CartSummary .line-price {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--font-dark);
+  white-space: nowrap;
+}
+
+.CartSummary .totals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px 20px;
+  border-top: solid 1px var(--border-color);
+}
+.CartSummary .total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  color: var(--font-light);
+}
+.CartSummary .total-row span:last-child {
+  color: var(--font-dark);
+  font-weight: 500;
+}
+.CartSummary .total-row.grand {
+  margin-top: 6px;
+  font-size: 19px;
+}
+.CartSummary .total-row.grand span {
+  font-weight: 800;
+  color: var(--font-dark);
+}
+
+/* ---- Pay now button ---- */
+.ShoppingCart .pay-now-button {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  background: var(--dark-green);
+  color: white;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.ShoppingCart .pay-now-button:hover {
+  background: var(--dark-green-hover);
+}
+.ShoppingCart .pay-now-button:active {
+  transform: translateY(1px);
 }

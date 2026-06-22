@@ -1,22 +1,20 @@
 .PaymentInfo {
-  padding: 16px 0;
+  background: var(--pure-white);
+  border-radius: var(--radius);
+  padding: 18px 20px 20px;
 }
 .PaymentInfo > h3 {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--font-dark);
+  font-size: 17px;
   font-weight: 600;
-}
-.PaymentInfo > h3 > span {
-  margin-left: 10px;
+  margin-bottom: 8px;
 }
 .PaymentInfo .label {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--font-light);
   font-size: 14px;
 }
 .PaymentInfo .is-danger {
-  color: #ff9b8a;
+  color: var(--bright-red);
   font-size: 14px;
   margin: 6px 0;
 }
@@ -25,7 +23,7 @@
   margin: 10px 0;
 }
 .PaymentInfo .input-field .label {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--font-light);
 }
 .PaymentInfo .input-field .control {
   width: 100%;
@@ -33,39 +31,38 @@
 }
 .PaymentInfo .input-field .control input {
   width: 100%;
-  height: 42px;
+  height: 44px;
   padding: 0 16px;
   border-radius: 10px;
-  border: solid 1px rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.06);
-  color: white;
+  border: solid 1px var(--border-color);
+  background: var(--pure-white);
+  color: var(--font-dark);
   flex: 1;
   font-size: 15px;
   outline: none;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 .PaymentInfo .input-field .control input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--muted);
 }
 .PaymentInfo .input-field .control input:focus {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--dark-green);
 }
 .PaymentInfo button {
-  margin-top: 12px;
+  margin-top: 14px;
   width: 100%;
-  padding: 14px 18px;
+  padding: 15px 18px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  background: var(--pure-white);
+  background: var(--dark-green);
   border: none;
-  border-radius: 999px;
-  color: var(--dark-green);
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  border-radius: 12px;
+  color: white;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
 .PaymentInfo button:hover {
-  opacity: 0.9;
+  background: var(--dark-green-hover);
 }
 .PaymentInfo button:active {
   transform: translateY(1px);

@@ -145,6 +145,21 @@
   color: var(--dark-green);
 }
 
+.SubNavbar .history-button {
+  height: 42px;
+  width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--font-dark);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.SubNavbar .history-button:hover {
+  background: var(--grey-bg);
+}
+
 .SubNavbar .cart-button {
   position: relative;
   height: 42px;

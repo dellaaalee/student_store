@@ -89,6 +89,10 @@ function SubNavbar({
             </i>
           </div>
 
+          <Link to="/orders" className="history-button" aria-label="Past orders">
+            <i className="material-icons">history</i>
+          </Link>
+
           <button className="cart-button" onClick={toggleSidebar} aria-label="Open cart">
             <i className="material-icons">shopping_cart</i>
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}

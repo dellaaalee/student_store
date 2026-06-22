@@ -1,0 +1,146 @@
+.PastOrders {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.PastOrders .po-content {
+  width: 100%;
+  max-width: 900px;
+  padding: 32px var(--side-padding);
+}
+.PastOrders .po-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--font-dark);
+  margin-bottom: 20px;
+}
+
+/* ---- Email filter ---- */
+.PastOrders .po-filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.PastOrders .po-filter input {
+  flex: 1;
+  min-width: 220px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: solid 1px var(--border-color);
+  background: var(--grey-bg);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.PastOrders .po-filter input:focus {
+  background: var(--pure-white);
+  border-color: var(--dark-green);
+}
+.PastOrders .po-filter-btn,
+.PastOrders .po-clear-btn {
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.PastOrders .po-filter-btn {
+  background: var(--dark-green);
+  color: white;
+}
+.PastOrders .po-filter-btn:hover {
+  background: var(--dark-green-hover);
+}
+.PastOrders .po-clear-btn {
+  background: transparent;
+  color: var(--font-dark);
+  border: solid 1px var(--border-color);
+}
+.PastOrders .po-active-filter {
+  color: var(--font-light);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.PastOrders .po-message {
+  color: var(--font-light);
+  font-size: 15px;
+  padding: 32px 0;
+  text-align: center;
+}
+
+/* ---- Orders table ---- */
+.PastOrders .po-table {
+  border: solid 1px var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--pure-white);
+}
+.PastOrders .po-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 12px;
+}
+.PastOrders .po-head {
+  background: var(--grey-bg);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--font-light);
+}
+.PastOrders .po-order {
+  border-top: solid 1px var(--border-color);
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--font-dark);
+  transition: background 0.12s ease;
+}
+.PastOrders .po-order:hover {
+  background: var(--dark-green-soft);
+}
+.PastOrders .po-id {
+  font-weight: 700;
+}
+.PastOrders .po-status {
+  text-transform: capitalize;
+  font-weight: 600;
+  justify-self: start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.PastOrders .po-status.completed {
+  background: var(--dark-green-soft);
+  color: var(--dark-green);
+}
+.PastOrders .po-status.pending {
+  background: #fff3e0;
+  color: #b26a00;
+}
+
+@media screen and (max-width: 600px) {
+  .PastOrders .po-content {
+    padding: 24px 16px;
+  }
+  .PastOrders .po-row {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 6px;
+  }
+  .PastOrders .po-head {
+    display: none;
+  }
+  .PastOrders .po-order span::before {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .PastOrders .po-order span.po-id::before { content: "Order"; }
+}
