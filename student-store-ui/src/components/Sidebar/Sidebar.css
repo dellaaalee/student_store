@@ -13,7 +13,7 @@
   overflow-y: scroll;
   padding-bottom: 2rem;
   background: var(--dark-blue);
-  border-right: solid 1px white;
+  border-right: solid 1px rgba(255, 255, 255, 0.08);
 }
 .Sidebar.closed {
   width: 60px;

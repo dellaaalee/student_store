@@ -8,42 +8,83 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
 }
 
 .CheckoutSuccess > h3 > span {
   margin-left: 10px;
 }
 .CheckoutSuccess p {
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
 }
 .CheckoutSuccess .card {
-  color: white;
+  color: var(--font-dark);
   display: flex;
   flex-direction: column;
+  background: var(--pure-white);
+  border-radius: var(--radius);
+  border: solid 1px var(--border-color);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.CheckoutSuccess .card-head {
+  padding: 16px 18px 0;
 }
 .CheckoutSuccess .card .card-title {
-  color: white;
-  font-weight: 20px;
+  color: var(--font-dark);
+  font-size: 18px;
+  font-weight: 700;
   margin-bottom: 5px;
 }
-.CheckoutSuccess .purchase .header {
-  color: white;
-  font-weight: 600;
-  text-align: center;
-  margin: 10px 0;
+.CheckoutSuccess .card-body {
+  padding: 12px 18px;
+}
+.CheckoutSuccess .purchase .header,
+.CheckoutSuccess .card-body > .header {
+  color: var(--dark-green);
+  font-weight: 700;
+  text-align: left;
+  margin: 4px 0 10px;
+  font-size: 15px;
 }
 .CheckoutSuccess .purchase {
-  padding-left: 20px;
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .CheckoutSuccess .purchase li {
-  color: white;
+  color: var(--font-light);
+  font-size: 14px;
+  padding-left: 0;
+}
+.CheckoutSuccess .card-foot {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: solid 1px var(--border-color);
 }
 .CheckoutSuccess button {
-  margin: 10px;
+  flex: 1;
   padding: 12px 18px;
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  background: transparent;
-  border: solid 1px white;
+  border-radius: 999px;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.CheckoutSuccess button.is-success {
+  background: var(--dark-green);
+  border: none;
   color: white;
+}
+.CheckoutSuccess button.is-success:hover {
+  background: var(--dark-green-hover);
+}
+.CheckoutSuccess button:not(.is-success) {
+  background: transparent;
+  border: solid 1px var(--border-color);
+  color: var(--font-dark);
 }

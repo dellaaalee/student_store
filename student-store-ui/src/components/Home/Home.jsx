@@ -21,6 +21,8 @@ function Home({isFetching, products, addToCart, removeFromCart, searchInputValue
       <ProductGrid
         products={productsToShow}
         isFetching={isFetching}
+        activeCategory={activeCategory}
+        searchInputValue={searchInputValue}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
         getQuantityOfItemInCart={getQuantityOfItemInCart}
