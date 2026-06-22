@@ -9,9 +9,11 @@
   gap: 14px;
 }
 .ShoppingCart .notification {
-  color: rgba(255, 255, 255, 0.7);
+  background: var(--pure-white);
+  border-radius: var(--radius);
+  color: var(--font-light);
   text-align: center;
-  margin: 24px 10px;
+  padding: 28px 20px;
   font-size: 15px;
 }
 

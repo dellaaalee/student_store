@@ -46,10 +46,14 @@ function App() {
   }, []);
 
   // Toggles the cart drawer. When closing it, clear the entered payment info
-  // so it isn't retained between sessions.
+  // and dismiss any completed-order receipt so the next open shows the cart
+  // + payment form rather than a stale receipt.
   const toggleSidebar = () =>
     setSidebarOpen((isOpen) => {
-      if (isOpen) setUserInfo({ name: "", email: "" });
+      if (isOpen) {
+        setUserInfo({ name: "", email: "" });
+        setOrder(null);
+      }
       return !isOpen;
     });
 

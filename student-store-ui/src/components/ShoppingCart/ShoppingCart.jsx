@@ -98,17 +98,28 @@ export default function ShoppingCart({
             setOrder={setOrder}
             toggleSidebar={toggleSidebar}
           />
-        ) : !hasItems ? (
-          <div className="notification">No items added to cart yet. Start shopping now!</div>
         ) : (
           <>
-            <CartSummary products={products} cart={cart} />
+            {hasItems ? (
+              <CartSummary products={products} cart={cart} />
+            ) : (
+              <div className="notification">No items added to cart yet. Start shopping now!</div>
+            )}
+            {/* Payment info is always present, even with an empty cart. */}
             <PaymentInfo
               userInfo={userInfo}
               setUserInfo={setUserInfo}
               handleOnCheckout={handleOnCheckout}
               isCheckingOut={isCheckingOut}
               error={error}
+            />
+            {/* Checkout info — delivery/confirmation note (no order yet). */}
+            <CheckoutSuccess
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+              order={order}
+              setOrder={setOrder}
+              toggleSidebar={toggleSidebar}
             />
           </>
         )}
