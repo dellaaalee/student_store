@@ -70,37 +70,35 @@ Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
 
 ### Stretch Features
 
-- [ ] **Added Endpoints**
-  - [ ] `GET /order-items`: Create an endpoint for fetching all order items in the database.
-  - [ ] `POST /orders/:order_id/items` Create an endpoint that adds a new order item to an existing order. 
-- [ ] **Past Orders Page**
-  - [ ] Build a page in the UI that displays the list of all past orders.
-  - [ ] The page lists all past orders for the user, including relevant information such as:
-    - [ ] Order ID
-    - [ ] Date
-    - [ ] Total cost
-    - [ ] Order status.
-  - [ ] The user should be able to click on any individual order to take them to a separate page detailing the transaction.
-  - [ ] The individual transaction page provides comprehensive information about the transaction, including:
-    - [ ] List of order items
-    - [ ] Order item quantities
-    - [ ] Individual order item costs
-    - [ ] Total order cost
-- [ ] **Filter Orders**.
-  - [ ] Create an input on the Past Orders page of the frontend application that allows the user to filter orders by the email of the person who placed the order. 
-  - [ ] Users can type in an email and click a button to filter the orders.
-  - [ ] Upon entering an email address and submitting the input, the list of orders is filtered to only show orders placed by the user with the provided email. 
-  - [ ] The user can easily navigate back to the full list of orders after filtering. 
-    - [ ] Proper error handling is implemented, such as displaying "no orders found" when an invalid email is provided.
-- [ ] **Deployment**
-  - [ ] Website is deployed using [Render](https://courses.codepath.org/snippets/site/render_deployment_guide).
-  - [ ] **VIDEO WALKTHROUGH SPECIAL INSTRUCTIONS**: To ease the grading process, please use the deployed version of your website in your walkthrough with the URL visible. 
+- [x] **Added Endpoints**
+  - [x] `GET /order-items`: Create an endpoint for fetching all order items in the database.
+  - [x] `POST /orders/:order_id/items` Create an endpoint that adds a new order item to an existing order. 
+- [x] **Past Orders Page**
+  - [x] Build a page in the UI that displays the list of all past orders.
+  - [x] The page lists all past orders for the user, including relevant information such as:
+    - [x] Order ID
+    - [x] Date
+    - [x] Total cost
+    - [x] Order status.
+  - [x] The user should be able to click on any individual order to take them to a separate page detailing the transaction.
+  - [x] The individual transaction page provides comprehensive information about the transaction, including:
+    - [x] List of order items
+    - [x] Order item quantities
+    - [x] Individual order item costs
+    - [x] Total order cost
+- [x] **Filter Orders**.
+  - [x] Create an input on the Past Orders page of the frontend application that allows the user to filter orders by the email of the person who placed the order. 
+  - [x] Users can type in an email and click a button to filter the orders.
+  - [x] Upon entering an email address and submitting the input, the list of orders is filtered to only show orders placed by the user with the provided email. 
+  - [x] The user can easily navigate back to the full list of orders after filtering. 
+    - [x] Proper error handling is implemented, such as displaying "no orders found" when an invalid email is provided.
+- [x] **Deployment**
+  - [x] Website is deployed using [Render](https://courses.codepath.org/snippets/site/render_deployment_guide).
+  - [x] **VIDEO WALKTHROUGH SPECIAL INSTRUCTIONS**: To ease the grading process, please use the deployed version of your website in your walkthrough with the URL visible. 
 
 
 
 ### Walkthrough Video
-
-`TODO://` Add the embedded URL code to your animated app walkthrough below, `ADD_EMBEDDED_CODE_HERE`. Make sure the video or gif actually renders and animates when viewing this README. (🚫 Remove this paragraph after adding walkthrough video)
 
 `ADD_EMBEDDED_CODE_HERE`
 
@@ -108,21 +106,15 @@ Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
 
 * Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
 
-Add your response here
+The lab (adopt a pet) helped me set the routes and controller. I also learned how to set up prisma. 
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
   
-Add your response here
+If I had more time, I think I would have perfected the UI a little more. 
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
 Add your response here
-
-### Open-source libraries used
-
-- Add any links to open-source libraries used in your project.
-
-### Shout out
 
 
 
