@@ -4,7 +4,7 @@
 
 Submitted by: **Della Lee**
 
-Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
+Deployed Application (optional): [Student Store Deployed Site] https://student-store-frontend-x4dm.onrender.com/
 
 ### Application Features
 
@@ -100,7 +100,7 @@ Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
 
 ### Walkthrough Video
 
-`ADD_EMBEDDED_CODE_HERE`
+https://www.loom.com/share/ccd0bcafb5a64aebafbdd48c83f41fb0
 
 ### Reflection
 
@@ -110,11 +110,13 @@ The lab (adopt a pet) helped me set the routes and controller. I also learned ho
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
   
-If I had more time, I think I would have perfected the UI a little more. 
+If I had more time, I think I would have perfected the UI a little more. I implemented the stretch feature for making the UI/ frontend better, but there's a little more I want to implement. 
+If I had more time, I would want to make a better streamline process of how the user checkout process is like. Right now, I think having everything is card along with the checkout information is kindof clucky. I also want to have user profile section and user authenetication. 
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
-Add your response here
+I think I did better about answering questions than last time. I was able to answer the questions my peers had a little better. 
+
 
 
 
